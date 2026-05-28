@@ -1,0 +1,21 @@
+{
+  "confidence_threshold": 0.8,
+  "scan_interval": 0.5,
+  "click_jitter": 5,
+  "region": null,
+  "max_opens": null,
+  "once": false,
+  "scan_once": false,
+  "dry_run": false,
+  "debug_dir": "debug",
+  "templates": {
+    "hongbao": "hongbao_icon.png",
+    "open": "open_button.png",
+    "close": "close_button.png"
+  },
+  "delays": {
+    "popup_wait": [0.5, 1.0],
+    "after_open_wait": [3.0, 4.0],
+    "cooldown": [1.0, 2.0]
+  }
+}
