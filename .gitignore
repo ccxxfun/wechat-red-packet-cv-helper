@@ -11,3 +11,13 @@ config.json
 .env
 .DS_Store
 Thumbs.db
+records/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.spec
+build/
+dist/
+*.zip
+tmp*/

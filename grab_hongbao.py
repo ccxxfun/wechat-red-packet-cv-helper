@@ -4,6 +4,7 @@ import argparse
 import json
 import logging
 import random
+import sys
 import time
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -376,6 +377,8 @@ def build_parser() -> argparse.ArgumentParser:
         description="PC WeChat red packet helper based on OpenCV template matching.",
     )
     parser.add_argument("--config", help="Path to a JSON config file")
+    parser.add_argument("--enhanced", action="store_true", help="Opt-in allowlisted group OCR and daily reporting")
+    parser.add_argument("--send-report", metavar="YYYY-MM-DD", help="Send one daily report using the configured webhook")
     parser.add_argument("--threshold", type=float, help="Template matching confidence, for example 0.8")
     parser.add_argument("--hongbao-template", help="Path to the red packet template image")
     parser.add_argument("--open-template", help="Path to the open-button template image")
@@ -401,12 +404,33 @@ def configure_logging(verbose: bool) -> None:
 
 
 def main() -> int:
+    # User-editable config and templates remain next to a packaged executable.
+    if getattr(sys, "frozen", False):
+        import os
+        os.chdir(Path(sys.executable).resolve().parent)
     parser = build_parser()
     args = parser.parse_args()
     configure_logging(args.verbose)
 
     try:
         config_path = Path(args.config) if args.config else None
+        if config_path is not None and not args.enhanced and not args.send_report:
+            with config_path.open("r", encoding="utf-8") as stream:
+                if isinstance(json.load(stream).get("enhanced"), dict):
+                    raise ValueError("enhanced configuration requires explicit --enhanced (or --send-report)")
+        if args.enhanced or args.send_report:
+            if config_path is None:
+                raise ValueError("enhanced mode requires --config PATH")
+            from enhanced import load_settings, run as run_enhanced, send_report
+            from datetime import date
+            settings = load_settings(config_path, dry_run=args.dry_run,
+                                     scan_once=args.scan_once, once=args.once,
+                                     max_opens=args.max_opens)
+            if args.send_report:
+                sent = send_report(settings, date.fromisoformat(args.send_report))
+                LOGGER.info("Report sent" if sent else "Report already sent")
+                return 0
+            return run_enhanced(settings)
         config = apply_cli_overrides(load_config_file(config_path), args)
         return run(config)
     except Exception as exc:

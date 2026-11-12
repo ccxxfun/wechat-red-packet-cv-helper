@@ -1,0 +1,41 @@
+{
+  "enhanced": {
+    "enabled": false,
+    "allowed_groups": ["请替换成自己的群名"],
+    "selected_group": "请替换成自己的群名",
+    "navigate_group": false,
+    "list_region": null,
+    "navigation_scroll_attempts": 0,
+    "header_region": [500, 90, 300, 40],
+    "chat_region": [450, 130, 700, 650],
+    "history_region": [480, 150, 630, 590],
+    "popup_region": [500, 180, 600, 500],
+    "result_region": [540, 200, 500, 450],
+    "card_status_roi": [0, 0, 100, 30],
+    "available_texts": ["微信红包", "领取红包", "恭喜发财"],
+    "templates": {
+      "cards": ["hongbao_icon.png"],
+      "open": ["open_button.png"],
+      "close": ["close_button.png"],
+      "claimed": []
+    },
+    "threshold": 0.86,
+    "max_scroll_attempts": 0,
+    "scroll_direction": "up",
+    "scroll_step": 3,
+    "card_wait": 0.5,
+    "result_wait": 1.0,
+    "scan_interval": 1.0,
+    "push_time": "00:10",
+    "webhook_env": "WECOM_WEBHOOK_URL",
+    "allow_empty_report": false,
+    "reporting": {
+      "default_messages": ["恭喜发财，大吉大利", "恭喜发财"],
+      "removal_phrases": ["示例待删除文字1", "示例待删除文字2"],
+      "header": "今日善款记录：",
+      "footer": "感谢大家的善心。",
+      "db_path": "records/packets.sqlite3",
+      "records_dir": "records"
+    }
+  }
+}

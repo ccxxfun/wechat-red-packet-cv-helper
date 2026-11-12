@@ -17,6 +17,8 @@ jobs:
           python -m pip install -U pip
           python -m pip install -r requirements.txt
       - name: Compile
-        run: python -m compileall .\grab_hongbao.py
+        run: python -m compileall .\grab_hongbao.py .\vision.py .\reporting.py .\enhanced.py
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
       - name: Show CLI help
         run: python .\grab_hongbao.py --help
